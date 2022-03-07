@@ -112,6 +112,7 @@
     View.prototype._bindItemEditDone = function (handler) {
         var that = this;
         $live('#todo-list li .edit', 'blur', function () {
+            console.log("_bindItemEditDone todo-list li .edit %c %o", "color: yellow; background-color: blue; padding: 0 2px;", that);
             if (!this.dataset.iscanceled) {
                 handler({
                     id: that._itemId(this),
@@ -125,6 +126,18 @@
                 // Remove the cursor from the input when you hit enter just like if it
                 // were a real form
                 this.blur();
+            }
+        });
+    };
+
+    View.prototype._bindItemEditCancel = function (handler) {
+        var that = this;
+        $live('#todo-list li .edit', 'keyup', function (event) {
+            if (event.keyCode === that.ESCAPE_KEY) {
+                this.dataset.iscanceled = true;
+                this.blur();
+
+                handler({id: that._itemId(this)});
             }
         });
     };
@@ -163,6 +176,13 @@
 
         } else if (event === 'itemEditCancel') {
             that._bindItemEditCancel(handler);
+        } else if (event === 'itemMarkDone') {
+            $live('#todo-list li .checkbox', 'change', function ({ target }) {
+                handler({
+                    id: that._itemId(this),
+                    isDone: target.checked
+                });
+            });
         }
     };
 

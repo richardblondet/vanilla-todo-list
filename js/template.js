@@ -11,6 +11,7 @@
 		this.defaultTemplate
 		=	'<li data-id="{{id}}">'
 		+		'<div class="view">'
+		+			'<input class="checkbox" type="checkbox" name="markdone" {{isDone}} />'
 		+			'<label>{{title}}</label>'
 		+			'<button class="destroy"></button>'
 		+		'</div>'
@@ -42,6 +43,7 @@
 
 			template = template.replace('{{id}}', data[i].id);
 			template = template.replace('{{title}}', data[i].title);
+			template = template.replace('{{isDone}}', data[i].isDone ? "checked" : "");
 
 			view = view + template;
 		}

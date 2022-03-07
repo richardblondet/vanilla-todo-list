@@ -33,6 +33,10 @@
 			that.removeItem(item.id);
 		});
 
+		that.view.bind('itemMarkDone', function (item) {
+			that.markItemDone(item);
+		});
+
 	}
 
 	/**
@@ -97,15 +101,29 @@
 	/*
 	 * Finishes the item editing mode successfully.
 	 */
-	Controller.prototype.editItemSave = function (id, title) {
+	Controller.prototype.editItemSave = function (id, title, isDone = false) {
 		var that = this;
 		if (title.trim()) {
-			that.model.update(id, {title: title}, function () {
-				that.view.render('editItemDone', {id: id, title: title});
+			that.model.update(id, {title: title, isDone }, function () {
+				that.view.render('editItemDone', {id: id, title: title, isDone });
 			});
 		} else {
 			that.removeItem(id);
 		}
+	};
+
+	/*
+	 * NEW: Persists items done
+	 */
+	Controller.prototype.markItemDone = function (item) {
+		var that = this;
+		that.model.read(item.id, function (data) {
+			const updatedItem = {
+				...data[0], 
+				...item
+			};
+			that.model.update(item.id, updatedItem, function () {});
+		});
 	};
 
 	/*
