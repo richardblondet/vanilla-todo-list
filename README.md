@@ -1,2 +1,5 @@
-# vanilla-todo-list
-Technical Question Exercise: add the mark done functionality
+# Todo List Mark
+
+Technical Exercise: 
+
+- Add functionality to mark done
